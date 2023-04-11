@@ -1,14 +1,17 @@
 import React from "react";
 import Count from "./Count";
 import Button from "../Common/Button/Button";
+import { connect } from "react-redux";
+import { DispatchType, StateType, actionType } from "../../redux/counter/actionTypes";
+import { decrement, increment } from "../../redux/counter/actions";
 
 interface Props {
-  id: number;
   count: number;
-  handleClick: (type: string, id: number) => void;
+  increment: (value: number) => actionType
+  decrement: (value: number) => actionType
 }
 
-const Counter = ({ id, count, handleClick }: Props) => {
+const Counter = ({ count, increment, decrement }: Props) => {
   return (
     <div
       style={{
@@ -25,11 +28,24 @@ const Counter = ({ id, count, handleClick }: Props) => {
           justifyContent: "space-between",
         }}
       >
-        <Button handleClick={() => handleClick("inc", id)}>Increment</Button>
-        <Button handleClick={() => handleClick("dec", id)}>Decrement</Button>
+        <Button handleClick={() => increment(2)}>Increment</Button>
+        <Button handleClick={() => decrement(1)}>Decrement</Button>
       </div>
     </div>
   );
 };
 
-export default Counter;
+const mapStateToProps = (state: StateType) => {
+  return {
+    count: state.value,
+  };
+};
+
+const mapDispatchToProps = (dispatch: DispatchType) => {
+  return {
+    increment: (value: number) => dispatch(increment(value)),
+    decrement: (value: number) => dispatch(decrement(value)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);

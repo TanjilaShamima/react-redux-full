@@ -7,5 +7,9 @@ export type StateType = {
 
 export type actionType = {
   type: string;
-  payload: number;
+  payload: {
+    value: number;
+  }
 };
+
+export type DispatchType = (args: actionType) => actionType
